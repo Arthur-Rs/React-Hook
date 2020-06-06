@@ -2,16 +2,16 @@ import styled from "styled-components";
 
 export const Container = styled.header`
   padding: 20px;
-  background: ${(props) => props.theme.primary};
+  background: ${(props) => props.theme.color.primary};
   display: flex;
   align-items: center;
 
   h1 {
-    color: ${(props) => props.theme.text};
+    color: ${(props) => props.theme.color.title};
   }
 
   svg {
-    color: ${(props) => props.theme.text};
+    color: ${(props) => props.theme.color.title};
     margin-right: 10px;
   }
 
@@ -33,7 +33,7 @@ export const Form = styled.form`
   }
   input {
     width: 50%;
-    background: ${(props) => props.theme.tertiary};
+    background: ${(props) => props.theme.color.tertiary};
     padding: 3px;
     font-size: 18px;
   }
@@ -42,12 +42,12 @@ export const Form = styled.form`
     display: flex;
     align-items: center;
     justify-content: center;
-    background: ${(props) => props.theme.secondary};
+    background: ${(props) => props.theme.color.secondary};
     svg {
       margin: 0px;
       height: 65%;
       width: 65%;
-      color: ${(props) => props.theme.primary};
+      color: ${(props) => props.theme.color.primary};
     }
   }
 `;

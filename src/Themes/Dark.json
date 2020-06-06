@@ -1,7 +1,22 @@
 {
-  "primary": "#263238",
-  "secondary": "#37464f",
-  "tertiary": "#4f5b62",
-  "text": "#eee",
-  "background": "#62717b"
+  "title": "Dark",
+  "color": {
+    "primary": "#263238",
+    "secondary": "#37464f",
+    "tertiary": "#4f5b62",
+    "title": "#eee"
+  },
+  "body": {
+    "background": "#62717b",
+    "text": "#eee"
+  },
+  "components": {
+    "switch": {
+      "offColor": "#000"
+    },
+    "repositories": {
+      "background": "#4f5b62",
+      "button": { "background": "#263238", "hover": "#37464f" }
+    }
+  }
 }

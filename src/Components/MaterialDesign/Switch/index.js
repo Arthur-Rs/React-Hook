@@ -1,24 +1,21 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+
 import Switch from "@material-ui/core/Switch";
-import {
-  setLightTheme,
-  getLightActivated,
-} from "../../../Functions/themeController";
+
+import { updateTheme, getThemeActived } from "../../../Utils/Controller/Theme";
 
 const SwitchMD = (props) => {
-  const [toggled, setToggled] = React.useState(getLightActivated());
-  const lovelyStyles = props.theme;
+  const update = useContext(updateTheme);
+  const defaultPosition = useContext(getThemeActived);
 
-  return (
-    <Switch
-      classes={lovelyStyles}
-      checked={toggled}
-      onChange={(e) => {
-        setToggled(e.target.checked);
-        setLightTheme(e.target.checked);
-      }}
-    />
-  );
+  const [checked, updateChecked] = useState(defaultPosition);
+
+  function UpdateSwitch(check) {
+    updateChecked(check.target.checked);
+    update(check.target.checked);
+  }
+
+  return <Switch checked={checked} onChange={UpdateSwitch} />;
 };
 
 export default SwitchMD;

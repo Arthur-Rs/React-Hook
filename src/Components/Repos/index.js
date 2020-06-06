@@ -1,39 +1,67 @@
 import React, { useState, useEffect } from "react";
 
-import { Container, ContainerRepos } from "./styles";
+import { Container, ContainerRepos, Info, HeaderRespos } from "./styles";
+
+import { BsStar, BsStarFill } from "react-icons/bs";
+
+import { GoEye, GoRepoForked, GoStar } from "react-icons/go";
+
+import usePersistedState from "../../Utils/Hooks/usePersistedState";
 
 export default function Repos() {
-  const [repositories, setRepositories] = useState([]);
+  const [repositories, setRepositories] = usePersistedState("repos", []);
 
   useEffect(() => {
     //Pegar os repositorios da Api do github
-    async function getRepositoriesApi() {
-      const Https = "https://api.github.com/users/Arthur-Rs/repos";
+    if (!repositories === []) {
+      async function getRepositoriesApi() {
+        const Https = "https://api.github.com/users/Microsoft/repos";
 
-      const response = await fetch(Https);
-      const data = await response.json();
-      const repos = await data.map((_data) => ({
-        ..._data,
-        favorite: false,
-      }));
+        const response = await fetch(Https);
+        const data = await response.json();
+        const repos = await data.map((_data) => ({
+          ..._data,
+          favorite: false,
+        }));
 
-      setRepositories(repos);
+        setRepositories(repos);
+      }
+
+      getRepositoriesApi();
     }
-
-    getRepositoriesApi();
   }, []);
 
   function handleFavorite(id) {
-    const newRepositories = repositories.map((repo) =>
-      repo.id === id
-        ? {
-            ...repo,
-            favorite: !repo.favorite,
-          }
-        : repo
-    );
+    const newRepositories = repositories.map((repo) => {
+      if (repo.id === id) {
+        return { ...repo, favorite: !repo.favorite };
+      } else {
+        return repo;
+      }
+    });
 
+    console.log(newRepositories);
     setRepositories(newRepositories);
+  }
+
+  function getStar(favorite, id) {
+    if (favorite === true) {
+      return (
+        <BsStarFill
+          onClick={() => {
+            handleFavorite(id);
+          }}
+        />
+      );
+    } else {
+      return (
+        <BsStar
+          onClick={() => {
+            handleFavorite(id);
+          }}
+        />
+      );
+    }
   }
 
   return (
@@ -45,15 +73,23 @@ export default function Repos() {
             key={repos.id}
           >
             <ContainerRepos>
-              <strong>{repos.name}</strong>
+              <HeaderRespos>
+                <strong>{repos.name}</strong>
+                {getStar(repos.favorite, repos.id)}
+              </HeaderRespos>
               <p>{repos.description}</p>
-              <button
-                onClick={() => {
-                  handleFavorite(repos.id);
-                }}
-              >
-                Favoritar
-              </button>
+              <Info>
+                <div>
+                  <span>{repos.language}</span>
+                  <GoStar />
+                  <span>{repos.stargazers_count}</span>
+                  <GoEye />
+                  <span>{repos.watchers_count}</span>
+                  <GoRepoForked />
+                  <span>{repos.forks_count}</span>
+                </div>
+                <button>Ver mais</button>
+              </Info>
             </ContainerRepos>
           </li>
         ))}

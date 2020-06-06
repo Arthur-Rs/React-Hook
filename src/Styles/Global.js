@@ -7,10 +7,9 @@ export const GlobalStyle = createGlobalStyle`
   *{
     padding: 0px;
     margin: 0px;
-    color: ${(props) => props.theme.text};
+    color: ${(props) => props.theme.body.text};
     font-family: "PT Sans",  sans-serif;
     list-style: none;
-    
   }
 
   *:focus{
@@ -18,7 +17,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body{
-    background: ${(props) => props.theme.background};
+    background: ${(props) => props.theme.body.background};
     display: flex;
     flex-direction: column;
   }
