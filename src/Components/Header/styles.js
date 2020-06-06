@@ -42,6 +42,7 @@ export const Form = styled.form`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     background: ${(props) => props.theme.color.secondary};
     svg {
       margin: 0px;

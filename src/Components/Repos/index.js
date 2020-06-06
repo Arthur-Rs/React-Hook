@@ -1,35 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { createContext } from "react";
 
 import { Container, ContainerRepos, Info, HeaderRespos } from "./styles";
-
 import { BsStar, BsStarFill } from "react-icons/bs";
-
 import { GoEye, GoRepoForked, GoStar } from "react-icons/go";
 
-import usePersistedState from "../../Utils/Hooks/usePersistedState";
+import useRequestState from "../../Utils/Hooks/useRequestState";
+
+import Request from "../../Utils/Functions/Request";
+
+export let UpdateRepos = createContext(() => {});
 
 export default function Repos() {
-  const [repositories, setRepositories] = usePersistedState("repos", []);
+  const [repositories, setRepositories] = useRequestState(
+    "Repositories",
+    "Arthur-Rs"
+  );
 
-  useEffect(() => {
-    //Pegar os repositorios da Api do github
-    if (!repositories === []) {
-      async function getRepositoriesApi() {
-        const Https = "https://api.github.com/users/Microsoft/repos";
-
-        const response = await fetch(Https);
-        const data = await response.json();
-        const repos = await data.map((_data) => ({
-          ..._data,
-          favorite: false,
-        }));
-
-        setRepositories(repos);
-      }
-
-      getRepositoriesApi();
-    }
-  }, []);
+  const updateReposFromNewUser = () => {
+    console.log("oi");
+    const user = document.getElementById("user").value;
+    Request(user).then((res) => {
+      setRepositories(res);
+    });
+  };
 
   function handleFavorite(id) {
     const newRepositories = repositories.map((repo) => {
@@ -39,8 +32,6 @@ export default function Repos() {
         return repo;
       }
     });
-
-    console.log(newRepositories);
     setRepositories(newRepositories);
   }
 
@@ -64,7 +55,7 @@ export default function Repos() {
     }
   }
 
-  return (
+  const Component = () => (
     <Container>
       <ul>
         {repositories.map((repos) => (
@@ -96,4 +87,16 @@ export default function Repos() {
       </ul>
     </Container>
   );
+
+  const ComponentLoading = () => (
+    <Container>
+      <h1>Carregando...</h1>
+    </Container>
+  );
+
+  if (repositories === []) {
+    return ComponentLoading();
+  } else {
+    return Component();
+  }
 }
